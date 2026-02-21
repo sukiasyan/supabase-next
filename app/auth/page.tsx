@@ -5,16 +5,21 @@ import {Button} from "@/components/ui/button";
 import {FcGoogle} from "react-icons/fc";
 import {FaGithub} from "react-icons/fa";
 import {supabaseBrowser} from "@/lib/supabase/browser";
+import {useSearchParams} from "next/navigation";
 
 export default function Page() {
+
+  const params = useSearchParams()
+  const next = params.get('next')
+
   const handleLoginWithOAuth = (provider: "github" | "google") => {
     const supabase =supabaseBrowser();
     supabase.auth.signInWithOAuth({ provider, options: {
-      redirectTo: location.origin + "/auth/callback"
+      redirectTo: location.origin + "/auth/callback?next=" + next
     }})
   }
-  const isLocalEnv = process.env.NODE_ENV === 'development'
-  console.log('Function: GET - Line 21 - ', isLocalEnv);
+
+
   return(
     <div className="flex items-center justify-center h-screen w-full">
       <div className="w-96 rounded border p-5 space-y-5">
